@@ -1,0 +1,4 @@
+C:\Users\User\Documents\GitHub\DodGy\DodGy\obj\Debug\netcoreapp3.1\DodGy.csprojAssemblyReference.cache
+C:\Users\User\Documents\GitHub\DodGy\DodGy\obj\Debug\netcoreapp3.1\DodGy.AssemblyInfoInputs.cache
+C:\Users\User\Documents\GitHub\DodGy\DodGy\obj\Debug\netcoreapp3.1\DodGy.AssemblyInfo.cs
+C:\Users\User\Documents\GitHub\DodGy\DodGy\obj\Debug\netcoreapp3.1\DodGy.csproj.CoreCompileInputs.cache
