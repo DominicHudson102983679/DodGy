@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DodGy;
 using System.Data.SqlClient;
 
 
@@ -45,7 +42,7 @@ namespace DodGy.Controllers
           try{
                using (SqlConnection con = new SqlConnection(this.ConStringWally))
                 {
-                    string queryString = " SELECT * FROM Is.INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' GO";
+                    string queryString = "select * from is.information_schema.tables where table_type = 'base table'";
                     using (SqlCommand command = new SqlCommand(queryString, con))
                     {
                         con.Open();
@@ -53,10 +50,9 @@ namespace DodGy.Controllers
                         return result.ToString();
                     }
                 }
-           }catch (ArgumentException e){
+           } catch (Exception e){
               return "ERROR: " + e.Message;
            }
-
         }
 
         // https://localhost:5001/Movie/ReadAllMovies
@@ -71,7 +67,7 @@ namespace DodGy.Controllers
 
             SqlConnection con = new SqlConnection(connectionString);
 
-            string queryString = "SELECT * FROM MOVIE";
+            string queryString = "select * from movie";
             SqlCommand command = new SqlCommand(queryString, con);
 
             con.Open();
@@ -113,7 +109,7 @@ namespace DodGy.Controllers
 
             SqlConnection con = new SqlConnection(connectionString);
 
-            string queryString = "SELECT TITLE FROM MOVIE WHERE TITLE LIKE 'The%';";
+            string queryString = "select title from movie where title like 'The %'";
             SqlCommand command = new SqlCommand(queryString, con);
 
             con.Open();
@@ -144,22 +140,23 @@ namespace DodGy.Controllers
             SqlConnection con = new SqlConnection(connectionString);
 
             string queryString = 
-            @"SELECT TITLE FROM
-            (SELECT C.ACTORNO, C.MOVIENO, M.TITLE
-
-            FROM  ((CASTING C
             
-            INNER JOIN ACTOR A 
-            ON C.ACTORNO = A. ACTORNO)
+            @"select title from
+            (select c.actorno, c.movieno, m.title
+
+            from ((casting c
+            
+            inner join actor a
+            on c.actorno = a.actorno)
                                 
-            INNER JOIN MOVIE M 
-            ON M.MOVIENO = C.MOVIENO))
+            inner join movie m 
+            on m.movieno = c.movieno))
 
-            S INNER JOIN (
-            SELECT ACTORNO FROM ACTOR WHERE FULLNAME = 'Luke Wilson') 
+            s inner join (
+            select actorno from actor where fullname = 'Luke Wilson')
             
-            A ON S.ACTORNO = A.ACTORNO
-            WHERE S.ACTORNO = A.ACTORNO;";
+            a on s.actorno = a.actorno
+            where s.actorno = a.actorno;";
 
             SqlCommand command = new SqlCommand(queryString, con);
 
@@ -174,6 +171,8 @@ namespace DodGy.Controllers
                     );
                 }
             }
+
+            con.Close();
 
             return this.MovieTitles;
         }
@@ -190,7 +189,7 @@ namespace DodGy.Controllers
 
             SqlConnection con = new SqlConnection(connectionString);
 
-            string queryString = "SELECT * FROM MOVIE";
+            string queryString = "select * from movie";
             SqlCommand command = new SqlCommand(queryString, con);
 
             con.Open();
@@ -214,6 +213,18 @@ namespace DodGy.Controllers
         }
 
         // https://localhost:5001/Movie/ChangeRuntime
+        // works, updates Speed in movies.sql to a runtime of 1000 minutes
+        /*
+            
+            {
+                "Runtime": 1000,
+                "title": "Speed"
+            }
+
+            select * from Movie
+            where runtime > 500;
+
+        */ 
         [HttpPost("ChangeRuntime")]
         public string ChangeRuntime(Movie m){
             string connectionString = 
@@ -224,7 +235,7 @@ namespace DodGy.Controllers
 
             SqlConnection con = new SqlConnection(connectionString);
 
-            string queryString = "UPDATE MOVIE SET RUNTIME = @Runtime WHERE TITLE = @title";
+            string queryString = "update movie set runtime = @Runtime where title = @title";
             SqlCommand command = new SqlCommand(queryString, con);
             command.Parameters.AddWithValue("@Runtime", (int)m.RunTime);
             command.Parameters.AddWithValue("@title", m.Title);
@@ -232,24 +243,36 @@ namespace DodGy.Controllers
             con.Open();
             var result = command.ExecuteNonQuery();
 
-            return "Updated " + result.ToString() + " row";
+            return result.ToString() + " rows updated in Movie table in Movies.sql";
         }
 
-        public class Obj{
-        public string firstVal { get; set;}
-        public string secondVal { get; set;}
-        public string thirdVal { get; set;}
+        public class Object{
+        public string oGivenname { get; set;}
+        public string oSurname { get; set;}
+        public string oNewSurname { get; set;}
 
-        public Obj(){
-            this.firstVal = "";
-            this.secondVal = "";
-            this.thirdVal = "";
+        public Object(){
+            this.oGivenname = "";
+            this.oSurname = "";
+            this.oNewSurname = "";
         }
     }
 
         // https://localhost:5001/Movie/ChangeSurname
+        // works, changes Ryan Reynolds fullname in the database to Ryan PurpleMonkeyDishwasher
+        /* 
+        {
+            "oGivenname": "Ryan",
+            "oSurname": "Reynolds",
+            "oNewSurname": "PurpleMonkeyDishwasher"
+        }
+
+        select * from actor
+        where fullname LIKE 'Ryan PurpleMonkeyDishwasher';
+
+        */
         [HttpPost("ChangeSurname")]
-        public string ChangeSurname(Obj o){
+        public string ChangeSurname(Object o){
             string connectionString = 
             @"Data Source=rpsdb.cgluvdnfm6uc.us-east-1.rds.amazonaws.com; 
             Initial Catalog=Movies;
@@ -258,19 +281,34 @@ namespace DodGy.Controllers
 
             SqlConnection con = new SqlConnection(connectionString);
 
-            string queryString = "UPDATE ACTOR SET FullName = @givenName + ' ' + @newSurname WHERE GivenName = @givenName AND Surname = @surname;";
+            string queryString = "update actor set fullName = @givenName + ' ' + @newSurname where givenName = @givenName and surname = @surname;";
             SqlCommand command = new SqlCommand(queryString, con);
-            command.Parameters.AddWithValue("@givenName",  o.firstVal);
-            command.Parameters.AddWithValue("@surname", o.secondVal);
-            command.Parameters.AddWithValue("@newSurname", o.thirdVal);
+            command.Parameters.AddWithValue("@givenName",  o.oGivenname);
+            command.Parameters.AddWithValue("@surname", o.oSurname);
+            command.Parameters.AddWithValue("@newSurname", o.oNewSurname);
 
             con.Open();
             var result = command.ExecuteNonQuery();
 
-            return "Updated row: (" + result.ToString() + ") in database";
+            return result.ToString() + " rows updated in Actor table in Movies.sql";
         }
 
         // https://localhost:5001/Movie/CreateMovie
+        // works, creates movie and inserts into movie table
+        /*
+
+        {
+            "MovieNo": 111112,
+            "Title": "test test test",
+            "ReleaseYear": 4000,
+            "Runtime" : 1
+        }
+
+        select * from movie
+        where relyear = 4000;
+
+        */
+
         [HttpPost("CreateMovie")]
         public string CreateMovie(Movie m){
             string connectionString = 
@@ -281,7 +319,7 @@ namespace DodGy.Controllers
 
             SqlConnection con = new SqlConnection(connectionString);
 
-            string queryString = "INSERT INTO MOVIE (MOVIENO, TITLE, RELYEAR, RUNTIME) VALUES (@no, @title , @year ,@time)";
+            string queryString = "insert into movie (movieno, title, relyear, runtime) values (@no, @title , @year ,@time)";
             SqlCommand command = new SqlCommand(queryString, con);
             command.Parameters.AddWithValue("@no",  m.MovieNo);
             command.Parameters.AddWithValue("@title", m.Title);
@@ -291,10 +329,25 @@ namespace DodGy.Controllers
             con.Open();
             var result = command.ExecuteNonQuery();
 
-            return "Updated row: (" + result.ToString() + ") in database";
+            return result.ToString() + " rows updated in Movie table in Movies.sql";
         }
 
         // https://localhost:5001/Movie/CreateActor
+        // works, creates new actor
+        /*
+
+        {
+            "ActorNo": 123456,
+            "FullName": "Crom Tuise",
+            "GivenName": "Crom",
+            "Surname" : "Tuise"
+        }
+
+        select * from actor
+        where GIVENNAME LIKE 'Crom';
+
+        */
+
         [HttpPost("CreateActor")]
         public string CreateActor(Actor a){
             string connectionString = 
@@ -305,7 +358,7 @@ namespace DodGy.Controllers
 
             SqlConnection con = new SqlConnection(connectionString);
 
-            string queryString = "INSERT INTO ACTOR (ActorNo,FullName,GivenName,Surname) values(@no, @fname, @gname, @surname)";
+            string queryString = "insert into actor (actorNo,fullName,givenName,surname) values (@no, @fname, @gname, @surname)";
             SqlCommand command = new SqlCommand(queryString, con);
             command.Parameters.AddWithValue("@no",  a.ActorNo);
             command.Parameters.AddWithValue("@fname", a.FullName);
@@ -315,22 +368,38 @@ namespace DodGy.Controllers
             con.Open();
             var result = command.ExecuteNonQuery();
 
-            return "Updated row: (" + result.ToString() + ") in database";
+            return result.ToString() + " rows updated in Actor table in Movies.sql";
         }
 
         public class IntObj{
-        public int firstVal {get; set;}
-        public int secondVal {get; set;}
-        public int thirdVal {get; set;}
+        public int ioId {get; set;}
+        public int ioAnum {get; set;}
+        public int ioMnum {get; set;}
 
         public IntObj(){
-            this.firstVal = 0;
-            this.secondVal = 1;
-            this.thirdVal = 2;
+            this.ioId = 0;
+            this.ioAnum = 1;
+            this.ioMnum = 2;
         }
     }
 
         // https://localhost:5001/Movie/CastActor
+        // works, creates casting and puts actor into movie
+        /*
+
+        {
+            "ioId": 123456,
+            "ioAnum": 123456,
+            "ioMnum": 324668
+        }
+
+        select * 
+        from Actor a
+        inner join Casting c
+        On a.ACTORNO = c.ACTORNO
+        where MOVIENO = 324668     
+
+        */
         [HttpPost("CastActor")]
         public string CastActor(IntObj o){
             string connectionString = 
@@ -341,17 +410,17 @@ namespace DodGy.Controllers
 
             SqlConnection con = new SqlConnection(connectionString);
 
-            string queryString = "INSERT INTO CASTING (Castid, ActorNo, MovieNo) values (@id, @aNum, @mNum)";
+            string queryString = "insert into casting (castid, actorno, movieno) values (@id, @aNum, @mNum)";
             SqlCommand command = new SqlCommand(queryString, con);
-            command.Parameters.AddWithValue("@id", (int) o.firstVal);
-            command.Parameters.AddWithValue("@aNum", (int) o.secondVal);
-            command.Parameters.AddWithValue("@mNum", (int)o.thirdVal);
+            command.Parameters.AddWithValue("@id", (int) o.ioId);
+            command.Parameters.AddWithValue("@aNum", (int) o.ioAnum);
+            command.Parameters.AddWithValue("@mNum", (int)o.ioMnum);
            
 
             con.Open();
             var result = command.ExecuteNonQuery();
 
-            return "Updated row: (" + result.ToString() + ") in database";
+            return result.ToString() + " rows updated in Casting table in Movies.sql";
         }
         
     }

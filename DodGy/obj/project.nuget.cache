@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "8vl3jrHEMa7wKpUddjgRk874Q6R37drE742Lm0Vy2Z34zA6BH14t7DhaBJNoRHAwvsJv9QNTNbQUGrcIPbd55A==",
+  "dgSpecHash": "z2twCKf50arl9FXK0RgudbbKaTGIWu84gsQyTvJI4WRo2qNtoLBstU9HQp7qFsf7N0YqbT5Hco9Ot12jcchOPw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\User\\Documents\\GitHub\\DodGy\\DodGy\\DodGy\\DodGy.csproj",
+  "projectFilePath": "C:\\Users\\User\\Documents\\GitHub\\DodGy\\DodGy\\dodgy\\dodgy.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\runtime.native.system.data.sqlclient.sni\\4.7.0\\runtime.native.system.data.sqlclient.sni.4.7.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\runtime.win-x64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",

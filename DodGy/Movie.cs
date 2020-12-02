@@ -1,18 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
+using Newtonsoft.Json;
 
 namespace DodGy
 {
     
     public class Movie
     {      
-        public int MovieNo { get; set; }
-        public string Title { get; set; }
-        public int ReleaseYear { get; set; }
-        public int RunTime { get; set; }
+        [JsonProperty("MovieNo")] public int MovieNo { get; set; }
+        [JsonProperty("Title")] public string Title { get; set; }
+        [JsonProperty("ReleaseYear")] public int ReleaseYear { get; set; }
+        [JsonProperty("RunTime")] public int RunTime { get; set; }
 
         public Movie()
         {
@@ -38,7 +35,7 @@ namespace DodGy
 
             SqlConnection con = new SqlConnection(connectionString);
 
-            string queryString = "SELECT COUNT(*) FROM CASTING WHERE MovieNo = @MovieNo";
+            string queryString = "select count(*) from casting where movieno = @MovieNo";
             SqlCommand command = new SqlCommand(queryString, con);
             command.Parameters.AddWithValue("@MovieNo", (int)MovieNo);
 
@@ -65,7 +62,7 @@ namespace DodGy
 
             SqlConnection con = new SqlConnection(connectionString);
 
-            string queryString = "SELECT CAST(YEAR(GETDATE()) AS INT) - RELYEAR FROM MOVIE WHERE MOVIENO = @MovieNo";
+            string queryString = "select cast(year(getdate()) as int) - relyear from movie where movieno = @MovieNo";
             SqlCommand command = new SqlCommand(queryString, con);
             command.Parameters.AddWithValue("@MovieNo", (int)MovieNo);
 
@@ -82,10 +79,5 @@ namespace DodGy
 
             return age;
         }
-
-        
-
-
-        
     }
 }

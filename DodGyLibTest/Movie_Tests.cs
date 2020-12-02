@@ -6,14 +6,7 @@ namespace DodGyLibTest
 {
     public class Movie_Tests
     {
-
         /*
-
-        Test run for C:\Users\User\Documents\GitHub\DodGy\DodGy\DodGyLibTest\bin\Debug\netcoreapp3.1\DodGyLibTest.dll(.NETCoreApp,Version=v3.1)
-        Microsoft (R) Test Execution Command Line Tool Version 16.7.0
-        Copyright (c) Microsoft Corporation.  All rights reserved.
-        Starting test execution, please wait...
-        A total of 1 test files matched the specified pattern.
 
         Test Run Successful.
         Total tests: 2
@@ -24,9 +17,6 @@ namespace DodGyLibTest
 
         [Fact]
         public void TestNumActors() {
-
-            
-
             Movie m1 = new Movie(122, "The Lord of the Rings: The Return of the King", 2003, 201);
             Movie m2 = new Movie(209112, "Batman v Superman: Dawn of Justice", 2016, 151);
             Movie m3 = new Movie(293660, "Deadpool", 2016, 108);

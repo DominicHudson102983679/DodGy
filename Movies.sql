@@ -2,8 +2,12 @@ Use Movies;
 
 go
 
-select castid from casting
-where movieno = 1726;
+select * from actor
+        where fullname LIKE 'Chris Captain America'
+
+go
+
+
 
 /*
 

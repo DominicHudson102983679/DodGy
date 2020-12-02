@@ -25,3 +25,4 @@ C:\Users\User\Documents\GitHub\DodGy\DodGy\DodGy\bin\Debug\netcoreapp3.1\runtime
 C:\Users\User\Documents\GitHub\DodGy\DodGy\DodGy\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Users\User\Documents\GitHub\DodGy\DodGy\DodGy\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Users\User\Documents\GitHub\DodGy\DodGy\DodGy\obj\Debug\netcoreapp3.1\DodGy.csproj.CopyComplete
+C:\Users\User\Documents\GitHub\DodGy\DodGy\DodGy\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll

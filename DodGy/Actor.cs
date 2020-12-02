@@ -1,20 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
-using DodGy;
-// using Newtonsoft.Json;
+using Newtonsoft.Json;
+
 
 namespace DodGy
 {
     public class Actor
     {
         
-        public int ActorNo { get; set; }
-        public string FullName { get; set; }
-        public string GivenName { get; set; }
-        public string Surname { get; set; }
+        [JsonProperty("ActorNo")] public int ActorNo { get; set; }
+        [JsonProperty("FullName")] public string FullName { get; set; }
+        [JsonProperty("GivenName")] public string GivenName { get; set; }
+        [JsonProperty("Surname")] public string Surname { get; set; }
 
         public Actor() {
             
@@ -41,7 +37,7 @@ namespace DodGy
 
             SqlConnection con = new SqlConnection(connectionString);
 
-            string queryString = "SELECT GivenName, Surname FROM ACTOR WHERE ActorNo = @ActorNo";
+            string queryString = "select givenname, surname = from actor where actorno = @ActorNo";
             SqlCommand command = new SqlCommand(queryString, con);
             command.Parameters.AddWithValue("@ActorNo", (int)acnum);
 
